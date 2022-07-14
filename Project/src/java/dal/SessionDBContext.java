@@ -66,6 +66,12 @@ public class SessionDBContext extends DBContext<Session> {
                 group g= new group();
                 g.setGid(rs.getInt("gid"));
                 g.setGname(rs.getString("gname"));
+                s.setGroup(g);
+                s.setTimeid(rs.getInt("timeid"));
+                s.setDate(rs.getDate("date"));
+                s.setRoom(rs.getString("room"));
+                s.setLid(rs.getInt("lid"));
+                sessions.add(s);
             }
             
         } catch (SQLException ex) {
