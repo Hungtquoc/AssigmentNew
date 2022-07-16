@@ -53,8 +53,7 @@ public class SessionDBContext extends DBContext<Session> {
         try {
             String sql = "select s.id, s.gid, g.gname ,s.timeid, s.date, s.roomid, s.lid from [Session] s\n"
                     + "inner join [Group] g on s.gid=g.id and s.lid=?\n"
-                    + "where s.date >= ? and s.date <= ?\n"
-                    + "order by s.date";
+                    + "where s.date >= ? and s.date <= ?\n";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lectureid);
             stm.setDate(2, fromDate);
@@ -73,7 +72,6 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setLid(rs.getInt(7));
                 sessions.add(s);
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -80,8 +80,7 @@ public class TimeTableController extends HttpServlet {
             dates.add(Date.valueOf(fm.format(c.getTime())));
             c.add(Calendar.DAY_OF_WEEK, 1);
         }
-        ArrayList<Session> sessions = sDBC.getFromToDate(dates.get(0),
-                dates.get(dates.size() - 1), lectureId);
+        ArrayList<Session> sessions = sDBC.getFromToDate(dates.get(0),dates.get(dates.size() - 1), lectureId);
         request.setAttribute("chooseDate", chooseDate.toString());
         request.setAttribute("sessions", sessions);
         request.setAttribute("dates", dates);
