@@ -54,7 +54,7 @@ public class SessionDBContext extends DBContext<Session> {
             String sql = "select s.id, s.gid, g.gname ,s.timeid, s.date, s.roomid, s.lid from [Session] s\n"
                     + "inner join [Group] g on s.gid=g.id and s.lid=?\n"
                     + "where s.date >= ? and s.date <= ?\n"
-                    + "order by s.date, timeid";
+                    + "order by s.date";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lectureid);
             stm.setDate(2, fromDate);
@@ -62,15 +62,15 @@ public class SessionDBContext extends DBContext<Session> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Session s = new Session();
-                s.setId(rs.getInt("id"));
+                s.setId(rs.getInt(1));
                 group g = new group();
-                g.setGid(rs.getInt("gid"));
-                g.setGname(rs.getString("gname"));
+                g.setGid(rs.getInt(2));
+                g.setGname(rs.getString(3));
                 s.setGroup(g);
-                s.setTimeid(rs.getInt("timeid"));
-                s.setDate(rs.getDate("date"));
-                s.setRoom(rs.getString("roomid"));
-                s.setLid(rs.getInt("lid"));
+                s.setTimeid(rs.getInt(4));
+                s.setDate(rs.getDate(5));
+                s.setRoom(rs.getString(6));
+                s.setLid(rs.getInt(7));
                 sessions.add(s);
             }
 
