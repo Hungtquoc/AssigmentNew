@@ -99,8 +99,7 @@ public class SessionDBContext extends DBContext<Session> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    @Override
-    public Session get(int id) {
+    public Session get(Session model) {
 
         try {
 
@@ -108,7 +107,7 @@ public class SessionDBContext extends DBContext<Session> {
                     + "where id=?";
 
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, id);
+            stm.setInt(1, model.getId());
 
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -121,7 +120,6 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setDate(rs.getDate("date"));
                 s.setRoom(rs.getString("room"));
                 s.setLid(rs.getInt("lid"));
-
                 return s;
             }
         } catch (SQLException ex) {
@@ -142,6 +140,11 @@ public class SessionDBContext extends DBContext<Session> {
 
     @Override
     public void delete(Session model) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Session get(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

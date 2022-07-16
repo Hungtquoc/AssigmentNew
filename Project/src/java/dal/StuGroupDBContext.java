@@ -10,7 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Session;
 import model.Student;
+import model.group;
 
 import model.stu_group;
 
@@ -20,25 +22,33 @@ import model.stu_group;
  */
 public class StuGroupDBContext extends DBContext<stu_group> {
 
-    public ArrayList<Student> getStudentsByGroup(int groupid) {
-        ArrayList<Student> students = new ArrayList<>();
+    public ArrayList<stu_group> getStuGroupBySession(Session session) {
+        ArrayList<stu_group> stu_groups = new ArrayList<>();
         try {
-            String sql = "select [index],s.id,sname from Student s\n"
-                    + "inner join stu_group st on st.sid= s.id where groupid = ?";
+            String sql = "select s.id, s.sname, g.id, g.lectureid, date from Student s inner join stu_group sg\n"
+                    + "on s.id=sg.sid inner join [Group] g on g.id= sg.groupid\n"
+                    + "inner join [Session] ses on ses.gid = g.id where g.id=? and date = ? and slot =?";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, groupid);
+            stm.setInt(1, session.getGroup().getGid());
+            stm.setDate(2, session.getDate());
+            stm.setInt(3, session.getTimeid());
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {                
-                Student s= new Student();
-                s.setIndex(rs.getInt("index"));
+            while (rs.next()) {
+                stu_group sg= new stu_group();
+                Student s = new Student();
                 s.setSid(rs.getInt("id"));
                 s.setName(rs.getString("sname"));
-                students.add(s);
+                group g= new group();
+                g.setGid(rs.getInt("g.id"));
+                g.setLectureid(rs.getInt("lectureid"));
+                sg.setGroup(g);
+                sg.setStudents(s);
+                stu_groups.add(sg);
             }
         } catch (SQLException ex) {
             Logger.getLogger(StuGroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return students;
+        return stu_groups;
     }
 
     @Override

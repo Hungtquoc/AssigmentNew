@@ -13,7 +13,7 @@ import java.sql.Date;
  */
 public class Attendance {
     private int id;
-    private int sesid;
+    private Session sesid;
     private Student student;
     private boolean status;
     private Date taketime;
@@ -26,14 +26,15 @@ public class Attendance {
         this.id = id;
     }
 
-    public int getSesid() {
+    public Session getSesid() {
         return sesid;
     }
 
-    public void setSesid(int sesid) {
+    public void setSesid(Session sesid) {
         this.sesid = sesid;
     }
 
+    
     public Student getStudent() {
         return student;
     }

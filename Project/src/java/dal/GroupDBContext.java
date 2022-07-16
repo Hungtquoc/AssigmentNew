@@ -31,7 +31,7 @@ public class GroupDBContext extends DBContext<group> {
                 g.setGid(rs.getInt("id"));
                 g.setGname(rs.getString("gname"));
                 g.setCourseid(rs.getString("courseid"));
-                g.setLectureid(rs.getString("lectureid"));
+                g.setLectureid(rs.getInt("lectureid"));
                 groups.add(g);
             }
         } catch (SQLException ex) {
@@ -53,7 +53,7 @@ public class GroupDBContext extends DBContext<group> {
                 g.setGid(rs.getInt("id"));
                 g.setGname(rs.getString("gname"));
                 g.setCourseid(rs.getString("courseid"));
-                g.setLectureid(rs.getString("lectureid"));
+                g.setLectureid(rs.getInt("lectureid"));
                 return g;
             }
         } catch (SQLException ex) {

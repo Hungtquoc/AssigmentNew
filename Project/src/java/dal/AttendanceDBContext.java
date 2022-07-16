@@ -7,11 +7,14 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Attendance;
+import model.Session;
 import model.Student;
+import model.group;
 
 /**
  *
@@ -19,35 +22,35 @@ import model.Student;
  */
 public class AttendanceDBContext extends DBContext<Attendance> {
 
-    public ArrayList<Attendance> getSession(int sessionid) {
-        ArrayList<Attendance> as = new ArrayList<>();
-        try {
+   
 
-            String sql = "select id, sesid, sid, checked, taketime from Attendance \n"
-                    + "where sesid =?";
+    @Override
+    public ArrayList<Attendance> list() {
+        ArrayList<Attendance> attendances= new ArrayList<>();
+        try {
+            
+            String sql = "select a.id, a.sid,a.sesid,s.date,s.gid,checked from Attendance a inner join Session s\n"
+                    + "on a.sesid= s.id";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, sessionid);
-            ResultSet rs = stm.executeQuery();
+            ResultSet rs= stm.executeQuery();
             while (true) {
-                Attendance a = new Attendance();
-                a.setId(rs.getInt("id"));
-                a.setSesid(rs.getInt("sesid"));
-                Student s = new Student();
-                s.setSid(rs.getInt("sid"));
+                Attendance a= new Attendance();
+                Student s= new Student();
+                Session ses= new Session();
+                group g= new group();
+                g.setGid(rs.getInt("gid"));
+                s.setSid(rs.getInt("a.sid"));
+                ses.setId(rs.getInt("s.sesid"));
+                ses.setGroup(g);
                 a.setStudent(s);
+                a.setSesid(ses);
                 a.setStatus(rs.getBoolean("checked"));
-                a.setTaketime(rs.getDate("taketime"));
-                as.add(a);
+                attendances.add(a);
             }
         } catch (SQLException ex) {
             Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return as;
-    }
-
-    @Override
-    public ArrayList<Attendance> list() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return attendances;
     }
 
     @Override
@@ -58,14 +61,13 @@ public class AttendanceDBContext extends DBContext<Attendance> {
     @Override
     public void insert(Attendance model) {
         try {
-            String sql = "insert into Attendance(id, sesid, sid, checked,taketime)\n"
-                    + "values(?, ?,?,?,?)";
+            String sql = "insert into Attendance(id, sesid, sid, checked)\n"
+                    + "values(?,?,?,?)";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, model.getId());
-            stm.setInt(2,model.getSesid());
+            stm.setInt(2, model.getSesid().getId());
             stm.setInt(3, model.getStudent().getSid());
             stm.setBoolean(4, model.isStatus());
-            stm.setDate(5, model.getTaketime());
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);

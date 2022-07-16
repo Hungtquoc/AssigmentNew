@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author trnha
@@ -12,7 +14,7 @@ public class Student {
     private int index;
     private int sid;
     private String name;
-
+    private ArrayList<Attendance> attends = new ArrayList<>();
     public int getIndex() {
         return index;
     }
@@ -36,5 +38,13 @@ public class Student {
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    public ArrayList<Attendance> getAttends() {
+        return attends;
+    }
+
+    public void setAttends(ArrayList<Attendance> attends) {
+        this.attends = attends;
+    }
+        
 }

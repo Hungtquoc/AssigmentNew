@@ -12,7 +12,7 @@ public class group {
     private int gid;
     private String gname;
     private String courseid;
-    private String lectureid;
+    private int lectureid;
 
     public int getGid() {
         return gid;
@@ -38,11 +38,11 @@ public class group {
         this.courseid = courseid;
     }
 
-    public String getLectureid() {
+    public int getLectureid() {
         return lectureid;
     }
 
-    public void setLectureid(String lectureid) {
+    public void setLectureid(int lectureid) {
         this.lectureid = lectureid;
     }
     

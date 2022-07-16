@@ -23,6 +23,7 @@ import model.Session;
 import model.Student;
 import model.group;
 import model.slot;
+import model.stu_group;
 /**
  *
  * @author trnha
@@ -64,16 +65,20 @@ public class TakeAttendance extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Session session= new Session();
-        group g= new group();
-        g.setGid(1623);
-        session.setGroup(g);
-        session.setDate(Date.valueOf("2022-07-11"));
-        slot s= new slot();
-        session.setTimeid(4);
-        lecture l= new lecture();
-        l.setLid(5);
-        
+        SessionDBContext sDB= new SessionDBContext();
+        StuGroupDBContext stuDB= new StuGroupDBContext();
+        AttendanceDBContext aDB= new AttendanceDBContext();
+        String sid= request.getParameter("sesid");
+        Session s= new Session();
+        s.setId(Integer.parseInt(sid));
+        Session session= sDB.get(s);
+        ArrayList<stu_group> stu_group= stuDB.getStuGroupBySession(session);
+        ArrayList<Attendance> attends= aDB.list();
+        for (stu_group stugroup : stu_group) {
+            for (Attendance attend : attends) {
+                
+            }
+        }
     } 
 
     /** 
@@ -86,31 +91,7 @@ public class TakeAttendance extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String lectureId = request.getParameter("lectureId");
-        String currentDate = request.getParameter("currentDate");
-        String sid = request.getParameter("sid");
-        SessionDBContext sDB = new SessionDBContext();
-        LectureDBContext lDB = new LectureDBContext();
-        ArrayList<lecture> lectures = lDB.list();
-        request.setAttribute("lectures", lectures);
-        if (sid != null) {
-            if (sid.length() > 0) {
-                Session s = sDB.get(Integer.parseInt(request.getParameter("id")));
-                if (s.isStatus()) {
-                    AttendanceDBContext arDB = new AttendanceDBContext();
-                    ArrayList<Attendance> ars = arDB.getSession(s.getId());
-                    request.setAttribute("ars", ars);
-                } else {
-                    StuGroupDBContext gsDB = new StuGroupDBContext();
-                    ArrayList<Student> students = gsDB.getStudentsByGroup(s.getGroup().getGid());
-                    request.setAttribute("students", students);
-                }
-                request.setAttribute("currentDate", currentDate);
-                request.setAttribute("lectureId", lectureId);
-                request.setAttribute("session", s);
-                request.getRequestDispatcher("../view/lecture/attendancereport.jsp").forward(request, response);
-            }            
-        } 
+        
     }
 
     /** 
