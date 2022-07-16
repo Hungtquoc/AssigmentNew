@@ -13,8 +13,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form id="formtable" action="calendar" method="post">
-            <table>
+        <form id="formtable" action="calendar" method="get">
+            <table border="1px">
                 <thead>
                     <tr>
                         <th>SelectDate<input type="date" name="chooseDate" value="${requestScope.chooseDate}" onchange="document.getElementById('formtable').submit();"> </th>
@@ -28,8 +28,10 @@
                         <th>SUN</th>
                     </tr>
                     <tr>
+                        <th></th>
+                        <th></th>
                         <c:forEach items="${requestScope.dates}" var="d">
-                            <<th>${d}</th>
+                            <th>${d.toLocalDate().getDayOfMonth()}/${d.toLocalDate().getMonthValue()}</th>
                             </c:forEach>
                     </tr>
                 </thead>
@@ -41,11 +43,10 @@
                                 <td <c:if test="${requestScope.chooseDate eq date}">bgcolor="#e0fffe"</c:if>></td>
                                 <c:set var="flag" value="0"></c:set>
                                 <c:forEach items="${requestScope.sessions}" var="s">
-                                    <c:if test="${(s.Date eq date) and (s.timeid eq i) }" >
+                                    <c:if test="${(s.getDate() eq date) and (s.getTimeid() eq i) }" >
                                         <c:set var="flag" value="1"></c:set>
-                                <a href=""> ${s.group.gname}<br>-${s.group.courseid} </a> <br>
-                                at ${s.room} <br>
-                                
+                                <a href=""> ${s.getGroup().getGname()}<br>-${s.getGroup().getCourseid()} </a> <br>
+                                at ${s.getRoom()} <br>
                             </c:if>
                         </c:forEach>
                     </c:forEach>

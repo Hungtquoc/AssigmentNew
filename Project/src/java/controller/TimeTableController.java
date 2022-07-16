@@ -75,17 +75,17 @@ public class TimeTableController extends HttpServlet {
         Calendar c = Calendar.getInstance();
         c.setFirstDayOfWeek(Calendar.MONDAY);
         c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
-        ArrayList<Date> dates = new ArrayStack<>();
+        ArrayList<Date> dates = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             dates.add(Date.valueOf(fm.format(c.getTime())));
             c.add(Calendar.DAY_OF_WEEK, 1);
         }
         ArrayList<Session> sessions = sDBC.getFromToDate(dates.get(0),dates.get(dates.size() - 1), lectureId);
-        request.setAttribute("chooseDate", chooseDate.toString());
+        request.setAttribute("chooseDate", chooseDate);
         request.setAttribute("sessions", sessions);
         request.setAttribute("dates", dates);
         request.setAttribute("lectureId", lectureId);
-        request.getRequestDispatcher("../view/Calendar/calendar.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/Calendar/calendar.jsp").forward(request, response);
     }
 
     /**
@@ -100,29 +100,6 @@ public class TimeTableController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SessionDBContext sDBC = new SessionDBContext();
-        int lectureId = 5;
-        SimpleDateFormat fm = new SimpleDateFormat("yyyy-mm-dd");
-        Calendar c = Calendar.getInstance();
-        String chooseDate = request.getParameter("chooseDate");
-        try {
-            c.setTime(fm.parse(chooseDate));
-        } catch (ParseException ex) {
-            Logger.getLogger(TimeTableController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        c.setFirstDayOfWeek(Calendar.MONDAY);
-        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
-        ArrayList<Date> dates = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            dates.add(Date.valueOf(fm.format(c.getTime())));
-            c.add(Calendar.DAY_OF_WEEK, 1);
-        }
-        ArrayList<Session> sessions = sDBC.getFromToDate(dates.get(0), dates.get(dates.size() - 1), lectureId);
-        request.setAttribute("chooseDate", chooseDate);
-        request.setAttribute("sessions", sessions);
-        request.setAttribute("dates", dates);
-        request.setAttribute("letureId", lectureId);
-        request.getRequestDispatcher("../view/Calendar/calendar.jsp").forward(request, response);
     }
 
     /**
