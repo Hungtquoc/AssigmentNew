@@ -19,7 +19,19 @@ import model.group;
  * @author trnha
  */
 public class SessionDBContext extends DBContext<Session> {
-
+    public void updateStatus(int id) {
+        try {
+            String sql = "UPDATE [dbo].[Session]\n"
+                    + "   SET \n"
+                    + "      [Status] = 1\n"
+                    + " WHERE ID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public ArrayList<Session> getSessionByDate(Date currentDate, int lectureid) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
@@ -51,9 +63,10 @@ public class SessionDBContext extends DBContext<Session> {
     public ArrayList<Session> getFromToDate(Date fromDate, Date toDate, int lectureid) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "select s.id, s.gid, g.gname ,s.timeid, s.date, s.roomid, s.lid from [Session] s\n"
+            String sql = "select s.id, s.gid, g.gname ,s.timeid, s.date, s.roomid, s.lid , status from [Session] s\n"
                     + "inner join [Group] g on s.gid=g.id and s.lid=?\n"
-                    + "where s.date >= ? and s.date <= ?\n";
+                    + "where s.date >= ? and s.date <= ?\n"
+                    + "order by date, timeid";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lectureid);
             stm.setDate(2, fromDate);
@@ -70,6 +83,7 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setDate(rs.getDate(5));
                 s.setRoom(rs.getString(6));
                 s.setLid(rs.getInt(7));
+                s.setStatus(rs.getBoolean("status"));
                 sessions.add(s);
             }
         } catch (SQLException ex) {
