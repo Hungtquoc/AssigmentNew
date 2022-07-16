@@ -23,7 +23,7 @@
         </form>
 
         <form action="schedule" method="POST" id="schedule_form">
-            <table border="1" id="schedule_table">
+            <table border="1" id="schedule_table" >
                 <tr>
                     <td>
                         Year: 2022 <br/>
@@ -62,7 +62,7 @@
                             <td>
                                 <c:forEach items="${requestScope.sessions}" var="s" >
                                     <c:if test="${s.getTimeid() eq slot.getId() and requestScope.week.getStartDate().plusDays(i) eq s.getDate().toLocalDate()}">
-                                        ${s.getGroup().getGname()} 
+                                        ${s.getGroup().getCourseid()}
                                     </c:if>
                                 </c:forEach> 
                             </td>

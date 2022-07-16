@@ -21,6 +21,8 @@ import dal.AttendanceDBContext;
 import model.Attendance;
 import model.Session;
 import model.Student;
+import model.group;
+import model.slot;
 /**
  *
  * @author trnha
@@ -62,16 +64,16 @@ public class TakeAttendance extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Date currentDate = new Date(System.currentTimeMillis());
-        SessionDBContext sDB = new SessionDBContext();
-        String lectureId = null;
-        LectureDBContext lDBC= new LectureDBContext();
-        ArrayList<lecture> lectures = lDBC.list();
-        request.setAttribute("lectures", lectures);
-        request.setAttribute("currentDate", currentDate.toString());
-
-        request.setAttribute("lectureId", lectureId);
-        request.getRequestDispatcher("../view/attendance/takeattendance.jsp").forward(request, response);
+        Session session= new Session();
+        group g= new group();
+        g.setGid(1623);
+        session.setGroup(g);
+        session.setDate(Date.valueOf("2022-07-11"));
+        slot s= new slot();
+        session.setTimeid(4);
+        lecture l= new lecture();
+        l.setLid(5);
+        
     } 
 
     /** 
