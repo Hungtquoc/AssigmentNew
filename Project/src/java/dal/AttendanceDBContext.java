@@ -73,7 +73,16 @@ public class AttendanceDBContext extends DBContext<Attendance> {
             Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    public boolean isExist(Attendance entity) {
+        boolean isExist = false;
+        ArrayList<Attendance> list = list();
+        for (Attendance a : list) {
+            if (a.getStudent().getSid()== entity.getStudent().getSid()&& a.getSesid().getId()== entity.getSesid().getId()) {
+                isExist = true;
+            }
+        }
+        return isExist;
+    }
     @Override
     public void update(Attendance model) {
         try {

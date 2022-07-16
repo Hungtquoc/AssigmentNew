@@ -16,7 +16,6 @@ public class Attendance {
     private Session sesid;
     private Student student;
     private boolean status;
-    private Date taketime;
 
     public int getId() {
         return id;
@@ -51,12 +50,4 @@ public class Attendance {
         this.status = status;
     }
 
-    public Date getTaketime() {
-        return taketime;
-    }
-
-    public void setTaketime(Date taketime) {
-        this.taketime = taketime;
-    }
-    
 }
