@@ -16,13 +16,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Session;
 import org.apache.tomcat.util.digester.ArrayStack;
-
+import model.Week;
+import dal.SlotTime;
 /**
  *
  * @author trnha
@@ -30,15 +32,6 @@ import org.apache.tomcat.util.digester.ArrayStack;
 @WebServlet(name = "TimeTableController", urlPatterns = {"/calendar"})
 public class TimeTableController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -56,57 +49,57 @@ public class TimeTableController extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ArrayList<Week> weeks= getWeeksOfYear();
+        SlotTime slot= new SlotTime();
+        LocalDate currentDate= LocalDate.now();
+        Week currentWeek = getWeekByDate(weeks, currentDate);
         SessionDBContext sDBC = new SessionDBContext();
         int lectureId = 5;
-        SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
-        Date chooseDate = new Date(System.currentTimeMillis());
-        Calendar c = Calendar.getInstance();
-        c.setFirstDayOfWeek(Calendar.MONDAY);
-        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
-        ArrayList<Date> dates = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            dates.add(Date.valueOf(fm.format(c.getTime())));
-            c.add(Calendar.DAY_OF_WEEK, 1);
-        }
-        ArrayList<Session> sessions = sDBC.getFromToDate(dates.get(0),dates.get(dates.size() - 1), lectureId);
-        request.setAttribute("chooseDate", chooseDate);
+        ArrayList<Session> sessions= sDBC.getFromToDate(lectureId, currentWeek.getStartDate(), currentWeek.getEndDate())
         request.setAttribute("sessions", sessions);
-        request.setAttribute("dates", dates);
-        request.setAttribute("lectureId", lectureId);
-        request.getRequestDispatcher("/view/Calendar/calendar.jsp").forward(request, response);
+        request.setAttribute("week", currentWeek);
+        request.setAttribute("slot", slot.list());
+        request.setAttribute("date", currentDate);
+        request.setAttribute("weeks", weeks);
+        request.setAttribute("sessions", sessions);
+        request.setAttribute("week", currentWeek);
+        request.getRequestDispatcher("view/Calendar/calendar.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
+    public ArrayList<Week> getWeeksOfYear() {
+        ArrayList<Week> weeks = new ArrayList<>();
+        LocalDate startDate = LocalDate.parse("03-01-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        for (int i = 0; i < 365; i += 7) {
+            LocalDate endDate = startDate.plusDays(6);
+            Week week = new Week();
+            week.setStartDate(startDate);
+            week.setEndDate(endDate);
+            weeks.add(week);
+            startDate = endDate.plusDays(1);
+        }
+        return weeks;
+    }
+    public Week getWeekByDate(ArrayList<Week> weeks, LocalDate date) {
+        Week currentWeek = new Week();
+        for (Week w : weeks) {
+            for (int i = 0; i < 6; i++) {
+                if (w.getStartDate().plusDays(i).equals(date)) {
+                    currentWeek = w;
+                    break;
+                }
+            }
+        }
+        return currentWeek;
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

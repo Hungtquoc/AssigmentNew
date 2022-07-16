@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,15 +63,15 @@ public class SessionDBContext extends DBContext<Session> {
         return sessions;
     }
 
-    public ArrayList<Session> getFromToDate(Date fromDate, Date toDate, int lectureid) {
+    public ArrayList<Session> getFromToDate(int lec, LocalDate startDate, LocalDate endDate) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
             String sql = "select s.id, s.gid,g.gname,,g.courseid.timeid, s.date, s.roomid,s.lid,s.status from [Session] s inner join [Group] g on\n"
                     + "s.gid= g.id and s.lid= ? where s.date >=? and s.date <=?";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, lectureid);
-            stm.setDate(2, fromDate);
-            stm.setDate(3, toDate);
+            stm.setInt(1, lec);
+            stm.setDate(2, Date.valueOf(startDate));
+            stm.setDate(3, Date.valueOf(endDate));
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Session s = new Session();

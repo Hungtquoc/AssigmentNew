@@ -13,46 +13,63 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form id="formtable" action="calendar" method="get">
-            <table border="1px">
-                <thead>
-                    <tr>
-                        <th>SelectDate<input type="date" name="chooseDate" value="${requestScope.chooseDate}" onchange="document.getElementById('formtable').submit();"> </th>
-                        <th>WEEK</th>
-                        <th>MON</th>
-                        <th>TUE</th>
-                        <th>WED</th>
-                        <th>THU</th>
-                        <th>FRI</th>
-                        <th>SAT</th>
-                        <th>SUN</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <c:forEach items="${requestScope.dates}" var="d">
-                            <th>${d.toLocalDate().getDayOfMonth()}/${d.toLocalDate().getMonthValue()}</th>
+        <form action="schedule">
+            <div style="text-align:center;">
+                Campus: <select>
+                    <option> FU-HL</option>
+                </select>  </div>
+            <div style="text-align: center;">Lecture: <input type="text" name="lecture" value="sonnt"> 
+                <input type="submit" value="View"> </div>
+        </form>
+
+        <form action="schedule" method="POST" id="schedule_form">
+            <table border="1" id="schedule_table">
+                <tr>
+                    <td>
+                        Year: 2022 <br/>
+                        Week:
+                        <select onchange="Submit()" id="week" name="week_index">
+                            <c:forEach items="${requestScope.weeks}" var="w">
+                                <option  value="${requestScope.weeks.indexOf(w)}"
+                                         <c:forEach var="i" begin="0" end="6">
+                                             <c:if test="${requestScope.date eq w.startDate.plusDays(i)}">
+                                                 selected = "selected";
+                                             </c:if>
+                                         </c:forEach> >
+                                    ${w.startDate.getDayOfMonth()}/${w.startDate.getMonthValue()} To ${w.endDate.getDayOfMonth()}/${w.endDate.getMonthValue()}
+                                </option>
                             </c:forEach>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="i" begin="1" end="8">
-                        <tr>
-                            <td>Slot ${i}</td>
-                            <c:forEach items="${requestScope.dates}" var="date">
-                                <td <c:if test="${requestScope.chooseDate eq date}">bgcolor="#e0fffe"</c:if>></td>
-                                <c:set var="flag" value="0"></c:set>
-                                <c:forEach items="${requestScope.sessions}" var="s">
-                                    <c:if test="${(s.getDate() eq date) and (s.getTimeid() eq i) }" >
-                                        <c:set var="flag" value="1"></c:set>
-                                <a href=""> ${s.getGroup().getGname()}<br>-${s.getGroup().getCourseid()} </a> <br>
-                                at ${s.getRoom()} <br>
-                            </c:if>
-                        </c:forEach>
+                        </select>
+                    </td>
+                    <td>Mon</td>
+                    <td>Tue</td>
+                    <td>Wed</td>
+                    <td>Thu</td>
+                    <td>Fri</td>
+                    <td>Sat</td>
+                    <td>Sun</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <c:forEach var="j" begin="0" end="6">
+                        <td>${requestScope.week.startDate.plusDays(j).getDayOfMonth()}/${requestScope.week.startDate.plusDays(j).getMonthValue()}</td>
                     </c:forEach>
+                </tr
+                <c:forEach items="${requestScope.slots}" var="slot">
+                    <tr>
+                        <td>${slot.slot}</td>
+                        <c:forEach var="i" begin="0" end="6">
+                            <td>
+                                <c:forEach items="${requestScope.sessions}" var="s">
+                                    <c:if test="${s.slot.slot eq slot.slot and requestScope.week.startDate.plusDays(i) eq s.date.toLocalDate()}">
+                                        ${s.date}
+                                    </c:if>
+                                </c:forEach> 
+                            </td>
+
+                        </c:forEach>  
                     </tr>
                 </c:forEach>
-                </tbody>
             </table>
         </form>
     </body>
