@@ -66,7 +66,7 @@ public class SessionDBContext extends DBContext<Session> {
     public ArrayList<Session> getFromToDate(int lec, LocalDate startDate, LocalDate endDate) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "select s.id, s.gid,g.gname,,g.courseid.timeid, s.date, s.roomid,s.lid,s.status from [Session] s inner join [Group] g on\n"
+            String sql = "select s.id, s.gid,g.gname,g.courseid,timeid, s.date, s.roomid,s.lid,s.status from [Session] s inner join [Group] g on\n"
                     + "s.gid= g.id and s.lid= ? where s.date >=? and s.date <=?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lec);

@@ -52,17 +52,17 @@
                 <tr>
                     <td></td>
                     <c:forEach var="j" begin="0" end="6">
-                        <td>${requestScope.week.startDate.plusDays(j).getDayOfMonth()}/${requestScope.week.startDate.plusDays(j).getMonthValue()}</td>
+                        <td>${requestScope.week.getStartDate().plusDays(j).getDayOfMonth()}/${requestScope.week.getStartDate().plusDays(j).getMonthValue()}</td>
                     </c:forEach>
                 </tr
-                <c:forEach items="${requestScope.slots}" var="slot">
+                <c:forEach items="${requestScope.slot}" var="slot">
                     <tr>
-                        <td>${slot.slot}</td>
+                        <td>Slot ${slot.getId()}</td>
                         <c:forEach var="i" begin="0" end="6">
                             <td>
-                                <c:forEach items="${requestScope.sessions}" var="s">
-                                    <c:if test="${s.slot.slot eq slot.slot and requestScope.week.startDate.plusDays(i) eq s.date.toLocalDate()}">
-                                        ${s.date}
+                                <c:forEach items="${requestScope.sessions}" var="s" >
+                                    <c:if test="${s.getTimeid() eq slot.getId() and requestScope.week.getStartDate().plusDays(i) eq s.getDate().toLocalDate()}">
+                                        ${s.getGroup().getGname()} 
                                     </c:if>
                                 </c:forEach> 
                             </td>
