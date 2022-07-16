@@ -57,7 +57,19 @@ public class AttendanceDBContext extends DBContext<Attendance> {
 
     @Override
     public void insert(Attendance model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String sql = "insert into Attendance(id, sesid, sid, checked,taketime)\n"
+                    + "values(?, ?,?,?,?)";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, model.getId());
+            stm.setInt(2,model.getSesid());
+            stm.setInt(3, model.getStudent().getSid());
+            stm.setBoolean(4, model.isStatus());
+            stm.setDate(5, model.getTaketime());
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -66,7 +78,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
             String sql = "update Attendance \n"
                     + "set checked=?\n"
                     + "where sid =?";
-            PreparedStatement stm= connection.prepareStatement(sql);
+            PreparedStatement stm = connection.prepareStatement(sql);
             stm.setBoolean(1, model.isStatus());
             stm.setInt(2, model.getStudent().getSid());
             stm.executeUpdate();

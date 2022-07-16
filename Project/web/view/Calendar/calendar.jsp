@@ -12,17 +12,23 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <table>
-            <tr>
-                <th>WEEK</th>
-                <th>MON</th>
-                <th>TUE</th>
-                <th>WED</th>
-                <th>THU</th>
-                <th>FRI</th>
-                <th>SAT</th>
-                <th>SUN</th>
-            </tr>
-        </table>
-    </body>
+        <form id="formtable" action="timetable" method="post">
+            <thead>
+            <table>
+                <tr>
+                    <th>SelectDate<input type="date" name="chooseDate" value="${requestScope.chooseDate}" onchange="document.getElementById('formtable').submit();"> </th>
+                    <th>WEEK</th>
+                    <th>MON</th>
+                    <th>TUE</th>
+                    <th>WED</th>
+                    <th>THU</th>
+                    <th>FRI</th>
+                    <th>SAT</th>
+                    <th>SUN</th>
+                </tr>
+            </table>
+        </thead>
+    </form>
+
+</body>
 </html>
