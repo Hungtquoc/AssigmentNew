@@ -19,9 +19,9 @@ public class LectureDBContext extends DBContext<lecture>{
     public ArrayList<lecture> list() {
         ArrayList<lecture> lecs = new ArrayList<>();
         try {
-            String sql = "SELECT [ID]\n"
-                    + "      ,[lname]\n"
-                    + "  FROM [Lecture]";
+            String sql = "SELECT id\n"
+                    + "      ,lname\n"
+                    + "  FROM Lecture";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
