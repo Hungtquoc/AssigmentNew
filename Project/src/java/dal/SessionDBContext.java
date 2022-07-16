@@ -50,30 +50,30 @@ public class SessionDBContext extends DBContext<Session> {
 
     public ArrayList<Session> getFromToDate(Date fromDate, Date toDate, int lectureid) {
         ArrayList<Session> sessions = new ArrayList<>();
-        try {            
-            String sql = "select s.id, gid,gname ,timeid, date, roomid, lid from [Session] s\n"
-                    + "inner join [Group] g on g.id=s.gid and s.lid=?\n"
-                    + "where s.date>=? and s.date<=?\n"
-                    + "order by s.date";
-            PreparedStatement stm  = connection.prepareStatement(sql);
+        try {
+            String sql = "select s.id, s.gid, g.gname ,s.timeid, s.date, s.roomid, s.lid from [Session] s\n"
+                    + "inner join [Group] g on s.gid=g.id and s.lid=?\n"
+                    + "where s.date >= ? and s.date <= ?\n"
+                    + "order by s.date, timeid";
+            PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lectureid);
             stm.setDate(2, fromDate);
             stm.setDate(3, toDate);
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {                
-                Session s= new Session();
+            while (rs.next()) {
+                Session s = new Session();
                 s.setId(rs.getInt("id"));
-                group g= new group();
+                group g = new group();
                 g.setGid(rs.getInt("gid"));
                 g.setGname(rs.getString("gname"));
                 s.setGroup(g);
                 s.setTimeid(rs.getInt("timeid"));
                 s.setDate(rs.getDate("date"));
-                s.setRoom(rs.getString("room"));
+                s.setRoom(rs.getString("roomid"));
                 s.setLid(rs.getInt("lid"));
                 sessions.add(s);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }

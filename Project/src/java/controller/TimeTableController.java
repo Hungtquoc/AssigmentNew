@@ -27,11 +27,13 @@ import org.apache.tomcat.util.digester.ArrayStack;
  *
  * @author trnha
  */
-@WebServlet(name="TimeTableController", urlPatterns={"/calendar"})
+@WebServlet(name = "TimeTableController", urlPatterns = {"/calendar"})
 public class TimeTableController extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -68,23 +70,25 @@ public class TimeTableController extends HttpServlet {
             throws ServletException, IOException {
         SessionDBContext sDBC = new SessionDBContext();
         int lectureId = 5;
-        SimpleDateFormat fm = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         Date chooseDate = new Date(System.currentTimeMillis());
         Calendar c = Calendar.getInstance();
         c.setFirstDayOfWeek(Calendar.MONDAY);
         c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
-        ArrayList<Date> dates= new ArrayStack<>();
+        ArrayList<Date> dates = new ArrayStack<>();
         for (int i = 0; i < 7; i++) {
             dates.add(Date.valueOf(fm.format(c.getTime())));
             c.add(Calendar.DAY_OF_WEEK, 1);
         }
-        ArrayList<Session> sessions= sDBC.getFromToDate(dates.get(0), dates.get(dates.size()-1), lectureId);
+        ArrayList<Session> sessions = sDBC.getFromToDate(dates.get(0),
+                dates.get(dates.size() - 1), lectureId);
         request.setAttribute("chooseDate", chooseDate.toString());
         request.setAttribute("sessions", sessions);
         request.setAttribute("dates", dates);
         request.setAttribute("lectureId", lectureId);
         request.getRequestDispatcher("../view/Calendar/calendar.jsp").forward(request, response);
     }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -94,15 +98,14 @@ public class TimeTableController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-     
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SessionDBContext sDBC = new SessionDBContext();
         int lectureId = 5;
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-mm-dd");
-        Calendar c= Calendar.getInstance();
-        String chooseDate=request.getParameter("chooseDate");
+        Calendar c = Calendar.getInstance();
+        String chooseDate = request.getParameter("chooseDate");
         try {
             c.setTime(fm.parse(chooseDate));
         } catch (ParseException ex) {
@@ -110,12 +113,12 @@ public class TimeTableController extends HttpServlet {
         }
         c.setFirstDayOfWeek(Calendar.MONDAY);
         c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
-        ArrayList<Date> dates= new ArrayList<>();
+        ArrayList<Date> dates = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             dates.add(Date.valueOf(fm.format(c.getTime())));
             c.add(Calendar.DAY_OF_WEEK, 1);
         }
-        ArrayList<Session> sessions=  sDBC.getFromToDate(dates.get(0), dates.get(dates.size()-1), lectureId);
+        ArrayList<Session> sessions = sDBC.getFromToDate(dates.get(0), dates.get(dates.size() - 1), lectureId);
         request.setAttribute("chooseDate", chooseDate);
         request.setAttribute("sessions", sessions);
         request.setAttribute("dates", dates);
@@ -123,8 +126,9 @@ public class TimeTableController extends HttpServlet {
         request.getRequestDispatcher("../view/Calendar/calendar.jsp").forward(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

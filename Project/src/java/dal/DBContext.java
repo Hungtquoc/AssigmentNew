@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Ngo Tung Son
+ * @param <T>
  */
 public abstract class DBContext<T> {
 
@@ -23,7 +24,7 @@ public abstract class DBContext<T> {
     public DBContext() {
         try {
             String user = "sa";
-            String pass = "123456";
+            String pass = "123";
             String url = "jdbc:sqlserver://TRANQUOCHUNG\\TRQUOCHUNG:1433;databaseName=Assigment";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, user, pass);
