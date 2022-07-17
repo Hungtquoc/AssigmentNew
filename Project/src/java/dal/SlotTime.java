@@ -22,7 +22,6 @@ public class SlotTime extends DBContext<slot>{
     public ArrayList<slot> list() {
         ArrayList<slot> slots= new ArrayList<>();
         try {
-            
             String sql = "select id from slot";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs= stm.executeQuery();

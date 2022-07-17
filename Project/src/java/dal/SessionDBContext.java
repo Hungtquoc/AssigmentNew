@@ -24,9 +24,10 @@ public class SessionDBContext extends DBContext<Session> {
     public ArrayList<Session> getFromToDate(int lec, LocalDate startDate, LocalDate endDate) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "select s.id, s.gid,g.gname,g.courseid,timeid, date, s.roomid,s.lid from [Session] s inner join [Group] g on\n"
-                    + "s.gid= g.id and s.lid= ? where date >=? and date <=?"
-                    + "order by date";
+            String sql = "select s.id,s.gid,g.gname ,s.timeid, s.date, s.roomid, s.lid, g.courseid from [Session] s\n"
+                    + "                    inner join [Group] g on g.id=s.gid and s.lid=?\n"
+                    + "                    where date>=? and date<=?\n"
+                    + "                    order by s.date";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lec);
             stm.setDate(2, Date.valueOf(startDate));
@@ -34,16 +35,16 @@ public class SessionDBContext extends DBContext<Session> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Session s = new Session();
-                s.setId(rs.getInt("id"));
+                s.setId(rs.getInt("s.id"));
                 group g = new group();
-                g.setGid(rs.getInt("gid"));
-                g.setGname(rs.getString("gname"));
-                g.setCourseid(rs.getString("courseid"));
+                g.setGid(rs.getInt("s.gid"));
+                g.setGname(rs.getString("g.gname"));
+                g.setCourseid(rs.getString("g.courseid"));
                 s.setGroup(g);
-                s.setTimeid(rs.getInt("timeid"));
-                s.setDate(rs.getDate("date"));
-                s.setRoom(rs.getString("roomid"));
-                s.setLid(rs.getInt("lid"));
+                s.setTimeid(rs.getInt("s.timeid"));
+                s.setDate(rs.getDate("s.date"));
+                s.setRoom(rs.getString("s.roomid"));
+                s.setLid(rs.getInt("s.lid"));
                 s.setStatus(rs.getBoolean("status"));
                 sessions.add(s);
             }

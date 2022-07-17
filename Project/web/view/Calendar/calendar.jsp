@@ -11,6 +11,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <script>
+            function Submit() {
+                let form = document.getElementById("schedule_form");
+                form.submit();
+            }
+        </script>
     </head>
     <body
             <div style="text-align:center;">
@@ -52,15 +58,15 @@
                     <c:forEach var="j" begin="0" end="6">
                         <td>${requestScope.week.getStartDate().plusDays(j).getDayOfMonth()}/${requestScope.week.getStartDate().plusDays(j).getMonthValue()}</td>
                     </c:forEach>
-                </tr
-                <c:forEach items="${requestScope.slot}" var="slot">
+                </tr>
+                <c:forEach items="${requestScope.slot}" var="sl">
                     <tr>
-                        <td>Slot ${slot.getId()}</td>
+                        <td>Slot ${sl.getId()}</td>
                         <c:forEach var="i" begin="0" end="6">
                             <td>
                                 <c:forEach items="${requestScope.sessions}" var="s" >
-                                    <c:if test="${s.getTimeid() eq slot.getId() and requestScope.week.getStartDate().plusDays(i) eq s.getDate().toLocalDate()}">
-                                        ${s.getGroup().getCourseid()}
+                                    <c:if test="${s.getTimeid() eq sl.getId() and requestScope.week.getStartDate().plusDays(i) eq s.getDate().toLocalDate()}">
+                                        ${s.getId()}
                                     </c:if>
                                 </c:forEach> 
                             </td>
