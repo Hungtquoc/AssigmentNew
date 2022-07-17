@@ -71,9 +71,8 @@ public class TakeAttendance extends HttpServlet {
         SessionDBContext sDB = new SessionDBContext();
         StuGroupDBContext stuDB = new StuGroupDBContext();
         AttendanceDBContext aDB = new AttendanceDBContext();
-        String sid = request.getParameter("sesid");
         Session s = new Session();
-        s.setId(Integer.parseInt(sid));
+        s.setId(Integer.parseInt(request.getParameter("sesid")));
         Session session = sDB.get(s);
         ArrayList<stu_group> stu_group = stuDB.getStuGroupBySession(session);
         ArrayList<Attendance> attends = aDB.list();

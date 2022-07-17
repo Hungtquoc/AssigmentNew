@@ -21,24 +21,12 @@ import model.group;
  */
 public class SessionDBContext extends DBContext<Session> {
 
-    public void updateStatus(int id) {
-        try {
-            String sql = "UPDATE [dbo].[Session]\n"
-                    + "   SET \n"
-                    + "      [Status] = 1\n"
-                    + " WHERE ID = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, id);
-            stm.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    
 
     public ArrayList<Session> getSessionByDate(Date currentDate, int lectureid) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "select id, gid,timeid,date,roomid,lid from [Session]\n"
+            String sql = "select sesid, gid,timeid,date,roomid,lid from [Session]\n"
                     + "where date=? and lid=?"
                     + "order by date";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -66,7 +54,7 @@ public class SessionDBContext extends DBContext<Session> {
     public ArrayList<Session> getFromToDate(int lec, LocalDate startDate, LocalDate endDate) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "select s.id, s.gid,g.gname,g.courseid,timeid, s.date, s.roomid,s.lid,s.status from [Session] s inner join [Group] g on\n"
+            String sql = "select sesid, s.gid,g.gname,g.courseid,timeid, s.date, s.roomid,s.lid,s.status from [Session] s inner join [Group] g on\n"
                     + "s.gid= g.id and s.lid= ? where s.date >=? and s.date <=?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lec);
@@ -100,10 +88,10 @@ public class SessionDBContext extends DBContext<Session> {
     }
 
     public Session get(Session model) {
-
+        Session s = new Session();
         try {
 
-            String sql = "select id, gid,timeid,date,roomid,lid,checked from [Session]\n"
+            String sql = "select sesid, gid,timeid,date,roomid,lid,checked from [Session]\n"
                     + "where id=?";
 
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -111,7 +99,7 @@ public class SessionDBContext extends DBContext<Session> {
 
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Session s = new Session();
+                
                 s.setId(rs.getInt("id"));
                 GroupDBContext gDB = new GroupDBContext();
                 group g = gDB.get(rs.getInt("gid"));
@@ -120,12 +108,12 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setDate(rs.getDate("date"));
                 s.setRoom(rs.getString("room"));
                 s.setLid(rs.getInt("lid"));
-                return s;
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return s;
     }
 
     @Override

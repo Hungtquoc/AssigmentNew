@@ -29,8 +29,8 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         ArrayList<Attendance> attendances= new ArrayList<>();
         try {
             
-            String sql = "select a.id, a.sid,a.sesid,s.date,s.gid,checked from Attendance a inner join Session s\n"
-                    + "on a.sesid= s.id";
+            String sql = "select a.id, a.sid,s.sesid,s.date,s.gid,checked from Attendance a inner join Session s\n"
+                    + "on a.sesid= s.sesid";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs= stm.executeQuery();
             while (true) {
