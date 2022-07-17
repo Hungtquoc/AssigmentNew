@@ -12,17 +12,15 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>
-        <form action="schedule">
+    <body
             <div style="text-align:center;">
                 Campus: <select>
                     <option> FU-HL</option>
                 </select>  </div>
-            <div style="text-align: center;">Lecture: <input type="text" name="lecture" value="sonnt"> 
-                <input type="submit" value="View"> </div>
-        </form>
+            <div style="text-align: center;">Lecture: <input type="text" name="lecture" value="sonnt">                
+       
 
-        <form action="schedule" method="POST" id="schedule_form">
+        <form action="calendar" method="POST" id="schedule_form">
             <table border="1" id="schedule_table" >
                 <tr>
                     <td>
