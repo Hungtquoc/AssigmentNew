@@ -43,7 +43,6 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setDate(rs.getDate("date"));
                 s.setRoom(rs.getString("roomid"));
                 s.setLid(rs.getInt("lid"));
-                
                 sessions.add(s);
             }
         } catch (SQLException ex) {
