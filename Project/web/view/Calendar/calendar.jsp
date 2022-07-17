@@ -64,7 +64,7 @@
                             <td>
                                 <c:forEach items="${requestScope.sessions}" var="s" >
                                     <c:if test="${s.getTimeid() eq sl.getId() and requestScope.week.getStartDate().plusDays(i-1) eq s.getDate().toLocalDate()}">
-                                        ${s.getGroup().getGname()} 
+                                        ${s.getGroup().getCourseid()} 
                                     </c:if>
                                 </c:forEach> 
                             </td>
