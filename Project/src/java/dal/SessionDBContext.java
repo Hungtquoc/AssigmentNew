@@ -22,33 +22,7 @@ import model.group;
 public class SessionDBContext extends DBContext<Session> {
 
 
-    public ArrayList<Session> getSessionByDate(Date currentDate, int lectureid) {
-        ArrayList<Session> sessions = new ArrayList<>();
-        try {
-            String sql = "select id, gid,timeid,date,roomid,lid from [Session]\n"
-                    + "where date=? and lid=?"
-                    + "order by date";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, currentDate.toString());
-            stm.setInt(2, lectureid);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Session s = new Session();
-                s.setId(rs.getInt("id"));
-                GroupDBContext gDB = new GroupDBContext();
-                group g = gDB.get(rs.getInt("gid"));
-                s.setGroup(g);
-                s.setTimeid(rs.getInt("timeid"));
-                s.setDate(rs.getDate("date"));
-                s.setRoom(rs.getString("room"));
-                s.setLid(rs.getInt("lid"));
-                sessions.add(s);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return sessions;
-    }
+    
 
     public ArrayList<Session> getFromToDate(int lec, LocalDate startDate, LocalDate endDate) {
         ArrayList<Session> sessions = new ArrayList<>();
