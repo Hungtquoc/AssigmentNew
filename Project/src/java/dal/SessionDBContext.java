@@ -21,9 +21,6 @@ import model.group;
  */
 public class SessionDBContext extends DBContext<Session> {
 
-
-    
-
     public ArrayList<Session> getFromToDate(int lec, LocalDate startDate, LocalDate endDate) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
