@@ -11,6 +11,7 @@
     </head>
     <body>
         Attendance for lecture Sonnt5 <br>
+        <h3><a href="calendar">Calendar</a></h3>
         <form action="take" method="post">
             <table>
                 <thead>
