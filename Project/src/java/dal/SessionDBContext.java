@@ -21,22 +21,22 @@ import model.group;
  */
 public class SessionDBContext extends DBContext<Session> {
 
-    public ArrayList<Session> getFromToDate(int lec, LocalDate startDate, LocalDate endDate) {
+    public ArrayList<Session> getFromToDate(LocalDate startDate, LocalDate endDate) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "select s.id,s.gid,g.gname ,s.timeid, s.date, s.roomid, s.lid, g.courseid from [Session] s\n"
-                    + "                    inner join [Group] g on g.id=s.gid and s.lid=?\n"
-                    + "                    where date>=? and date<=?\n";
+            String sql = "select s.id,s.gid,g.gname ,s.timeid, s.date, s.roomid, s.lid, g.courseid,status from [Session] s\n"
+                    + "inner join [Group] g on g.id=s.gid "
+                    + "inner join slot sl on sl.id = s.timeid "
+                    + "where s.lid=5 and s.date >= ? and s.date <= ?";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, lec);
-            stm.setDate(2, Date.valueOf(startDate));
-            stm.setDate(3, Date.valueOf(endDate));
+            stm.setDate(1, Date.valueOf(startDate));
+            stm.setDate(2, Date.valueOf(endDate));
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Session s = new Session();
                 s.setId(rs.getInt("s.id"));
                 group g = new group();
-                g.setGid(rs.getInt("s.gid"));
+                g.setGid(rs.getInt("g.id"));
                 g.setGname(rs.getString("g.gname"));
                 g.setCourseid(rs.getString("g.courseid"));
                 s.setGroup(g);
@@ -44,6 +44,7 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setDate(rs.getDate("s.date"));
                 s.setRoom(rs.getString("s.roomid"));
                 s.setLid(rs.getInt("s.lid"));
+                s.setStatus(rs.getBoolean("status"));
                 sessions.add(s);
             }
         } catch (SQLException ex) {
@@ -51,7 +52,6 @@ public class SessionDBContext extends DBContext<Session> {
         }
         return sessions;
     }
-
     @Override
     public ArrayList<Session> list() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -60,7 +60,6 @@ public class SessionDBContext extends DBContext<Session> {
     public Session get(Session model) {
 
         try {
-
             String sql = "select id, gid,timeid,date,roomid,lid,checked from [Session]\n"
                     + "where id=?";
 

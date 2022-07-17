@@ -34,7 +34,22 @@ public class LectureDBContext extends DBContext<lecture>{
         }
         return lecs;
     }
-
+    public lecture getLectureByint(int user) {
+        lecture lec = new lecture();
+        try {
+            String sql = "select id, lname from Lecture where id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, user);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()) {
+                lec.setLid(rs.getInt("id"));
+                lec.setLname(rs.getString("lname"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LectureDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lec;
+    }
     @Override
     public lecture get(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

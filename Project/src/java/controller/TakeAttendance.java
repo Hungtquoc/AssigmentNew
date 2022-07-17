@@ -11,17 +11,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Date;
-import dal.LectureDBContext;
 import java.util.ArrayList;
-import model.lecture;
 import dal.StuGroupDBContext;
 import dal.AttendanceDBContext;
 import model.Attendance;
 import model.Session;
-import model.Student;
-import model.group;
-import model.slot;
 import model.stu_group;
 
 /**

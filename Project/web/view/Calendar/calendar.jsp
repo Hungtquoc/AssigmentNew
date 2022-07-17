@@ -34,11 +34,11 @@
                             <c:forEach items="${requestScope.weeks}" var="w">
                                 <option  value="${requestScope.weeks.indexOf(w)}"
                                          <c:forEach var="i" begin="0" end="6">
-                                             <c:if test="${requestScope.date eq w.startDate.plusDays(i-1)}">
+                                             <c:if test="${requestScope.date eq w.getStartDate().plusDays(i-1)}">
                                                  selected = "selected";
                                              </c:if>
                                          </c:forEach> >
-                                    ${w.startDate.getDayOfMonth()}/${w.startDate.getMonthValue()} To ${w.endDate.getDayOfMonth()}/${w.endDate.getMonthValue()}
+                                    ${w.startDate.getDayOfMonth()}/${w.getStartDate().getMonthValue()} To ${w.getEndDate().getDayOfMonth()}/${w.endDate.getMonthValue()}
                                 </option>
                             </c:forEach>
                         </select>
@@ -63,7 +63,7 @@
                         <c:forEach var="i" begin="0" end="6">
                             <td>
                                 <c:forEach items="${requestScope.sessions}" var="s" >
-                                    <c:if test="${s.timeid eq sl.id and requestScope.week.startDate.plusDays(i-1) eq s.date.toLocalDate()}">
+                                    <c:if test="${s.getTimeid() eq sl.getId() and requestScope.week.getStartDate().plusDays(i-1) eq s.getDate().toLocalDate()}">
                                         ${s.getGroup().getGname()} 
                                     </c:if>
                                 </c:forEach> 

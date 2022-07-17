@@ -87,8 +87,8 @@ public class TimeTableController extends HttpServlet {
         LocalDate currentDate= LocalDate.now();
         Week currentWeek = getWeekByDate(weeks, currentDate);
         SessionDBContext sDBC = new SessionDBContext();
-        int lectureId = 5;
-        ArrayList<Session> sessions= sDBC.getFromToDate(lectureId, currentWeek.getStartDate(), currentWeek.getEndDate());
+        
+        ArrayList<Session> sessions= sDBC.getFromToDate( currentWeek.getStartDate(), currentWeek.getEndDate());
         request.setAttribute("week", currentWeek);
         request.setAttribute("slot", slot.list());
         request.setAttribute("date", currentDate);
@@ -107,13 +107,13 @@ public class TimeTableController extends HttpServlet {
         LocalDate currentDate = w.getStartDate();
         Week currentWeek = getWeekByDate(weeks, currentDate);
         SessionDBContext sDBC = new SessionDBContext();
-        int lectureId = 5;
-        ArrayList<Session> sessions= sDBC.getFromToDate(lectureId, currentWeek.getStartDate(), currentWeek.getEndDate());
+        ArrayList<Session> sessions= sDBC.getFromToDate( currentWeek.getStartDate(), currentWeek.getEndDate());   
         request.setAttribute("sessions", sessions);
         request.setAttribute("slot", slot.list());
         request.setAttribute("week", currentWeek);
         request.setAttribute("date", currentDate);
         request.setAttribute("weeks", weeks);
+        
         request.getRequestDispatcher("view/Calendar/calendar.jsp").forward(request, response);
     }
 
