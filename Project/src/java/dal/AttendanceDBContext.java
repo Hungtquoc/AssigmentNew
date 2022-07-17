@@ -33,7 +33,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                     + "on a.sesid= s.id";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs= stm.executeQuery();
-            while (true) {
+            while (rs.next()) {
                 Attendance a= new Attendance();
                 Student s= new Student();
                 Session ses= new Session();

@@ -98,6 +98,7 @@ public class TimeTableController extends HttpServlet {
         return currentWeek;
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ArrayList<Week> weeks = getWeeksOfYear();
@@ -116,7 +117,7 @@ public class TimeTableController extends HttpServlet {
         request.setAttribute("week", currentWeek);
         request.setAttribute("date", currentDate);
         request.setAttribute("weeks", weeks);
-        request.getRequestDispatcher("view/schedule.jsp").forward(request, response);
+        request.getRequestDispatcher("view/Calendar/calendar.jsp").forward(request, response);
     }
 
     @Override

@@ -25,7 +25,8 @@ public class SessionDBContext extends DBContext<Session> {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
             String sql = "select s.id, s.gid,g.gname,g.courseid,timeid, date, s.roomid,s.lid from [Session] s inner join [Group] g on\n"
-                    + "s.gid= g.id and s.lid= ? where date >=? and date <=?";
+                    + "s.gid= g.id and s.lid= ? where date >=? and date <=?"
+                    + "order by date";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lec);
             stm.setDate(2, Date.valueOf(startDate));
@@ -43,6 +44,7 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setDate(rs.getDate("date"));
                 s.setRoom(rs.getString("roomid"));
                 s.setLid(rs.getInt("lid"));
+                s.setStatus(rs.getBoolean("status"));
                 sessions.add(s);
             }
         } catch (SQLException ex) {
