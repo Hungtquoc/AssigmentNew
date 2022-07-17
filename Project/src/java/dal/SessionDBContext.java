@@ -34,17 +34,17 @@ public class SessionDBContext extends DBContext<Session> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Session s = new Session();
-                s.setId(rs.getInt("s.id"));
+                s.setId(rs.getInt(1));
                 group g = new group();
-                g.setGid(rs.getInt("g.id"));
-                g.setGname(rs.getString("g.gname"));
-                g.setCourseid(rs.getString("g.courseid"));
+                g.setGid(rs.getInt(2));
+                g.setGname(rs.getString(3));
+                g.setCourseid(rs.getString(8));
                 s.setGroup(g);
-                s.setTimeid(rs.getInt("s.timeid"));
-                s.setDate(rs.getDate("s.date"));
-                s.setRoom(rs.getString("s.roomid"));
-                s.setLid(rs.getInt("s.lid"));
-                s.setStatus(rs.getBoolean("status"));
+                s.setTimeid(rs.getInt(4));
+                s.setDate(rs.getDate(5));
+                s.setRoom(rs.getString(6));
+                s.setLid(rs.getInt(7));
+                s.setStatus(rs.getBoolean(9));
                 sessions.add(s);
             }
         } catch (SQLException ex) {
