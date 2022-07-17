@@ -32,7 +32,7 @@
                         <input type="hidden" name="stuid" value="${requestScope.stulist.get(i).getSid()}">
                         <input type="hidden" name="stuname" value="${requestScope.stulist.get(i).getName()}">
                         <td><input type="radio" name="status${i}" value="0" checked="checked"> Absent
-                            <input type="radio" name="status${i}" value="1"> Attended</td>
+                            <input type="radio" name="status${i}" value="1" > Attended</td>
                         </tr>
                     </c:forEach>
                 </c:if>

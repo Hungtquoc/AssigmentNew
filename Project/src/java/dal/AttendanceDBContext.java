@@ -25,23 +25,19 @@ public class AttendanceDBContext extends DBContext {
     public ArrayList<Attendance> getAttendancesBySession(int sesid) {
         ArrayList<Attendance> attendances = new ArrayList<>();
         try {
-            String sql = "select aid,sesid,a.sid,a.checked,s.sname,g.id,g.courseid,g.gname,ses.id,ses.timeid,ses.date,c.id,c.cname,l.lname from Attendance a inner join Student s\n"
-                    + "on a.sid=s.id inner join  stu_group sg \n"
-                    + "on sg.sid=s.id inner join  [Group] g \n"
-                    + "on g.id=sg.groupid inner join Session ses \n"
-                    + "on ses.gid= g.id inner join course c\n"
-                    + "on c.id= g.courseid inner join Lecture l\n"
-                    + "on l.id= ses.lid\n"
-                    + "where ses.id=?";
+            String sql = "select a.aid , a.checked , a.sesid , a.[sid] , s.sname from Attendance a \n"
+                    + "inner join [Session] se on a.sesid = se.id\n"
+                    + "inner join [Student] s on a.[sid] = s.id\n"
+                    + "where a.[sesid] = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, sesid);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Attendance a = new Attendance();
                 a.setId(rs.getInt(1));
-                a.setStatus(rs.getBoolean(4));
+                a.setStatus(rs.getBoolean(2));
                 Student s = new Student();
-                s.setSid(rs.getInt(3));
+                s.setSid(rs.getInt(4));
                 s.setName(rs.getString(5));
                 a.setStudent(s);
                 SessionDBContext sdb = new SessionDBContext();

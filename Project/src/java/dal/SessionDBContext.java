@@ -33,7 +33,7 @@ public class SessionDBContext extends DBContext {
             ResultSet rs= stm.executeQuery();
             while (rs.next()) {
                 Session s = new Session();
-                s.setId(rs.getInt(1));
+                s.setId(ses);
                 group g = new group();
                 g.setGid(rs.getInt(2));
                 g.setGname(rs.getString(3));
