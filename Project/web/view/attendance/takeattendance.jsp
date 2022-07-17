@@ -13,8 +13,8 @@
         Attendance for lecture Sonnt5 <br>
         <h3><a href="calendar">Calendar</a></h3>
         <form action="take" method="post">
-            <table>
-                <thead>
+            <table border ="1px">
+                <thead style="background-color: rgb(83, 97, 223)">
                     <tr>
                         <td>No</td>
                         <td>Sid</td>

@@ -26,7 +26,7 @@
             <div style="text-align: center;">Lecture: <input type="text" name="lecture" value="sonnt">                
         <form action="calendar" method="POST" id="schedule_form">
             <table border="1" id="schedule_table" >
-                <tr>
+                <tr style="background-color: rgb(83, 97, 223)" >
                     <td>
                         Year: 2022 <br/>
                         Week:
