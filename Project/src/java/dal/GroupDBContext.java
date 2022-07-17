@@ -17,7 +17,7 @@ import model.group;
  *
  * @author trnha
  */
-public class GroupDBContext extends DBContext<group> {
+public class GroupDBContext extends DBContext{
 
     public ArrayList<group> getListByLecture(String lectureId) {
         ArrayList<group> groups = new ArrayList<>();
@@ -40,7 +40,7 @@ public class GroupDBContext extends DBContext<group> {
         return groups;
     }
 
-    @Override
+   
     public group get(int id) {
         
         try {
@@ -62,24 +62,5 @@ public class GroupDBContext extends DBContext<group> {
         return null;
     }
 
-    @Override
-    public void insert(group model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void update(group model) {
-        
-    }
-
-    @Override
-    public void delete(group model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public ArrayList<group> list() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+   
 }

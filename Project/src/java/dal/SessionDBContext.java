@@ -19,12 +19,42 @@ import model.group;
  *
  * @author trnha
  */
-public class SessionDBContext extends DBContext<Session> {
-
+public class SessionDBContext extends DBContext {
+    
+    public Session getSessionByID(int ses){
+        try {
+            
+            String sql= "select s.id,s.gid,g.gname ,s.timeid, s.date, s.roomid, s.lid, g.courseid from [Session] s\n"
+                    + "inner join [Group] g on g.id=s.gid "
+                    + "inner join slot sl on sl.id = s.timeid "
+                    + "where s.id=?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, ses);
+            ResultSet rs= stm.executeQuery();
+            while (rs.next()) {
+                Session s = new Session();
+                s.setId(rs.getInt(1));
+                group g = new group();
+                g.setGid(rs.getInt(2));
+                g.setGname(rs.getString(3));
+                g.setCourseid(rs.getString(8));
+                s.setGroup(g);
+                s.setTimeid(rs.getInt(4));
+                s.setDate(rs.getDate(5));
+                s.setRoom(rs.getString(6));
+                s.setLid(rs.getInt(7));
+                return s;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     public ArrayList<Session> getFromToDate(LocalDate startDate, LocalDate endDate) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "select s.id,s.gid,g.gname ,s.timeid, s.date, s.roomid, s.lid, g.courseid,status from [Session] s\n"
+            String sql = "select s.id,s.gid,g.gname ,s.timeid, s.date, s.roomid, s.lid, g.courseid from [Session] s\n"
                     + "inner join [Group] g on g.id=s.gid "
                     + "inner join slot sl on sl.id = s.timeid "
                     + "where s.lid=5 and s.date >= ? and s.date <= ?";
@@ -44,7 +74,7 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setDate(rs.getDate(5));
                 s.setRoom(rs.getString(6));
                 s.setLid(rs.getInt(7));
-                s.setStatus(rs.getBoolean(9));
+                
                 sessions.add(s);
             }
         } catch (SQLException ex) {
@@ -52,10 +82,7 @@ public class SessionDBContext extends DBContext<Session> {
         }
         return sessions;
     }
-    @Override
-    public ArrayList<Session> list() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 
     public Session get(Session model) {
 
@@ -85,24 +112,6 @@ public class SessionDBContext extends DBContext<Session> {
         return null;
     }
 
-    @Override
-    public void insert(Session model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void update(Session model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void delete(Session model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Session get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 
 }

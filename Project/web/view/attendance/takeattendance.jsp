@@ -10,40 +10,53 @@
 
     </head>
     <body>
-        Attendance for lecture Sonnt5 at slot 1 on 11/7/2022<br>
+        Attendance for lecture Sonnt5 <br>
         <form action="take" method="post">
             <table>
                 <thead>
                     <tr>
                         <td>No</td>
-                        <td>Group</td>
                         <td>Sid</td>
                         <td>Name</td>
                         <td>Status</td>
-                        <td>Taker</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${sessionScope.stu_group}" var="sg">
-                        <tr>
-                            <td>${stu_group.indexOf(sg)+1}</td>
-                            <td>${sg.getGroup().getGid()}</td>
-                            <td>${sg.getStudents().getSid()}</td>
-                            <td>${sg.getStudents().getName()}</td>
-                            <td>
-                                <input type="radio" value="false" 
-                                       <c:if test="${!sg.getStudents().isAttend(session)}">checked="checked"</c:if>
-                                       name="check_${sg.getStudents().getSid()}"> absent
-                                <input type="radio" value="true" 
-                                       <c:if test="${!sg.getStudents().isAttend(session)}">checked="checked"</c:if>
-                                       name="check_${sg.getStudents().getSid()}"> present
-                            </td>
-                            <td>${sg.getGroup().getLectureid()}</td>
+                    <c:if test="${requestScope.stulist.size()>0}">
+                        <c:forEach begin="0" end="${requestScope.stulist.size()-1}" var="i" step="1">
+                            <tr>
+                                <td>${i+1}</td>
+                                <td>${requestScope.stulist.get(i).getSid()}</td>
+                                <td>${requestScope.stulist.get(i).getName()}</td>
+                        <input type="hidden" name="stuid" value="${requestScope.stulist.get(i).getSid()}">
+                        <input type="hidden" name="stuname" value="${requestScope.stulist.get(i).getName()}">
+                        <td><input type="radio" name="status${i}" value="0" checked="checked"> Absent
+                            <input type="radio" name="status${i}" value="1"> Attended</td>
                         </tr>
                     </c:forEach>
+                </c:if>
+                <c:if test = "${requestScope.alist.size() > 0}">
+                    <c:forEach begin = "0" end="${requestScope.alist.size()-1}" var = "i" step = "1">
+                        <tr>
+                            <td>${i+1}</td>
+                            <td>${requestScope.alist.get(i).getStudent().getSid()}</td>
+                            <td>${requestScope.alist.get(i).getStudent().getName()}</td>
+                        <input type="hidden" name="stuid"
+                               value="${requestScope.alist.get(i).getStudent().getSid()}">
+                        <input type="hidden" name="stuname"
+                               value="${requestScope.alist.get(i).getStudent().getName()}">
+                        <input type="hidden" name="aid"
+                               value="${requestScope.alist.get(i).getId()}">
+                        <td><input type="radio" name="status${i}" value="0"<c:if test="${requestScope.alist.get(i).isStatus() eq false}">checked="checked"</c:if>> Absent
+                            <input type="radio" name="status${i}" value="1"<c:if test="${requestScope.alist.get(i).isStatus() eq true}">checked="checked"</c:if>> Attended
+                            </td>
+                            </tr>
+                    </c:forEach>
+                </c:if>
                 </tbody>
             </table>
-            <br> <input type="submit" value="Save">
+            <input type="hidden" name="sesid" value="${requestScope.session.getId()}">
+            <input type="submit" value="Save">
         </form>
     </body>
 </html>

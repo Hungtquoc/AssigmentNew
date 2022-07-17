@@ -20,7 +20,7 @@ import model.stu_group;
  *
  * @author trnha
  */
-public class StuGroupDBContext extends DBContext<stu_group> {
+public class StuGroupDBContext extends DBContext {
 
     public ArrayList<stu_group> getStuGroupBySession(Session session) {
         ArrayList<stu_group> stu_groups = new ArrayList<>();
@@ -51,29 +51,6 @@ public class StuGroupDBContext extends DBContext<stu_group> {
         return stu_groups;
     }
 
-    @Override
-    public ArrayList<stu_group> list() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public stu_group get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void insert(stu_group model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void update(stu_group model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void delete(stu_group model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 
 }

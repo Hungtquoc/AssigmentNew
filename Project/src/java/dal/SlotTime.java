@@ -16,9 +16,7 @@ import model.slot;
  *
  * @author trnha
  */
-public class SlotTime extends DBContext<slot>{
-
-    @Override
+public class SlotTime extends DBContext{
     public ArrayList<slot> list() {
         ArrayList<slot> slots= new ArrayList<>();
         try {
@@ -36,24 +34,5 @@ public class SlotTime extends DBContext<slot>{
         return slots;
     }
 
-    @Override
-    public slot get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void insert(slot model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void update(slot model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void delete(slot model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
 }

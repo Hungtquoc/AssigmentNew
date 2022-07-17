@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.AttendanceDBContext;
 import dal.SessionDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,12 +12,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import dal.StudentDBContext;
+import dal.SessionDBContext;
 import java.util.ArrayList;
-import dal.StuGroupDBContext;
-import dal.AttendanceDBContext;
 import model.Attendance;
 import model.Session;
-import model.stu_group;
+import model.Student;
 
 /**
  *
@@ -62,24 +63,19 @@ public class TakeAttendance extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SessionDBContext sDB = new SessionDBContext();
-        StuGroupDBContext stuDB = new StuGroupDBContext();
-        AttendanceDBContext aDB = new AttendanceDBContext();
-        int id =5;
-        Session s = new Session();
-        s.setId(id);
-        Session session = sDB.get(s);
-        ArrayList<stu_group> stu_group = stuDB.getStuGroupBySession(session);
-        ArrayList<Attendance> attends = aDB.list();
-        for (stu_group stugroup : stu_group) {
-            for (Attendance attend : attends) {
-                if (attend.getStudent().getSid() == stugroup.getStudents().getSid()) {
-                    stugroup.getStudents().getAttends().add(attend);
-                }
-            }
+        StudentDBContext sDB=  new StudentDBContext();
+        SessionDBContext sesDB= new SessionDBContext();
+        AttendanceDBContext aDB= new AttendanceDBContext();
+        int sesid=Integer.parseInt(request.getParameter("sesid"));
+        Session s= sesDB.getSessionByID(sesid);
+        request.setAttribute("session", s);
+        ArrayList<Attendance> alist= aDB.getAttendancesBySession(s.getId());
+        if(alist.isEmpty()){
+            ArrayList<Student> stulist = sDB.listStudentBy(sesid);
+            request.setAttribute("stulist", stulist);
+        }else{
+            request.setAttribute("alist", alist);
         }
-        request.getSession().setAttribute("session", session);
-        request.getSession().setAttribute("stu_group", stu_group);
         request.getRequestDispatcher("view/attendance/takeattendance.jsp").forward(request, response);
     }
 
@@ -94,26 +90,32 @@ public class TakeAttendance extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AttendanceDBContext attendDB = new AttendanceDBContext();
-        SessionDBContext sessionDB = new SessionDBContext();
-        ArrayList<stu_group> stu_groups = (ArrayList<stu_group>) request.getSession().getAttribute("stu_group");
-        for (stu_group stu_group1 : stu_groups) {
-            Attendance attendance = new Attendance();
-            boolean attend = request.getParameter("check_" + stu_group1.getStudents().getSid()).equals("true");
-            attendance.setStatus(attend);
-            attendance.setStudent(stu_group1.getStudents());
-            Session s = (Session) request.getSession().getAttribute("session");
-            s.setStatus(true);
-            attendance.setSesid(s);
-            if (!attendDB.isExist(attendance)) {
-                attendDB.insert(attendance);
-            } else {
-                attendDB.update(attendance);
+        StudentDBContext sDB=  new StudentDBContext();
+        SessionDBContext sesDB= new SessionDBContext();
+        AttendanceDBContext aDB= new AttendanceDBContext();
+        int sesid = Integer.parseInt(request.getParameter("sesid"));
+        Session ses= sesDB.getSessionByID(sesid);
+        String[] aid= request.getParameterValues("aid");
+        String[] stuid=request.getParameterValues("stuid");
+        String[] stuname = request.getParameterValues("stuname");
+        ArrayList<Attendance> alist= new ArrayList<>();
+        for (int i = 0; i < stuid.length; i++) {
+            Attendance a= new Attendance();
+            if(aid== null){
+                a.setId(-1);
+            }else{
+                a.setId(Integer.parseInt(aid[i]));
             }
-            request.getSession().removeAttribute("session");
-            request.getSession().removeAttribute("enrolls");
-            response.sendRedirect("schedule");
+            Student s = new Student();
+            s.setSid(Integer.parseInt(stuid[i]));
+            s.setName(stuname[i]);
+            a.setStudent(s);
+            a.setSesid(ses);
+            a.setStatus(request.getParameter("status" + i).equals("1"));
+            alist.add(a);
         }
+        aDB.InsertorUpdate(alist);
+        response.sendRedirect("take?sesid="+sesid);
     }
 
     /**

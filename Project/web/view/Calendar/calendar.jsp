@@ -64,11 +64,11 @@
                             <td>
                                 <c:forEach items="${requestScope.sessions}" var="s" >
                                     <c:if test="${s.getTimeid() eq sl.getId() and requestScope.week.getStartDate().plusDays(i-1) eq s.getDate().toLocalDate()}">
-                                        ${s.getGroup().getCourseid()} 
+                                        ${s.getGroup().getCourseid()}
+                                        <a href="take?sesid=${s.getId()}">Take</a>
                                     </c:if>
                                 </c:forEach> 
                             </td>
-
                         </c:forEach>  
                     </tr>
                 </c:forEach>

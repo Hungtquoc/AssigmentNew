@@ -14,8 +14,8 @@ import model.lecture;
  *
  * @author trnha
  */
-public class LectureDBContext extends DBContext<lecture>{
-    @Override
+public class LectureDBContext extends DBContext{
+    
     public ArrayList<lecture> list() {
         ArrayList<lecture> lecs = new ArrayList<>();
         try {
@@ -50,24 +50,6 @@ public class LectureDBContext extends DBContext<lecture>{
         }
         return lec;
     }
-    @Override
-    public lecture get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void insert(lecture model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void update(lecture model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void delete(lecture model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
     
 }
