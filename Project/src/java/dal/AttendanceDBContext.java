@@ -29,8 +29,8 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         ArrayList<Attendance> attendances= new ArrayList<>();
         try {
             
-            String sql = "select a.id, a.sid,s.sesid,s.date,s.gid,checked from Attendance a inner join Session s\n"
-                    + "on a.sesid= s.sesid";
+            String sql = "select a.id, a.sid,a.sesid,s.date,s.gid,checked from Attendance a inner join Session s\n"
+                    + "on a.sesid= s.id";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs= stm.executeQuery();
             while (true) {
@@ -40,7 +40,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 group g= new group();
                 g.setGid(rs.getInt("gid"));
                 s.setSid(rs.getInt("a.sid"));
-                ses.setId(rs.getInt("s.sesid"));
+                ses.setId(rs.getInt("a.sesid"));
                 ses.setGroup(g);
                 a.setStudent(s);
                 a.setSesid(ses);
