@@ -26,8 +26,7 @@ public class SessionDBContext extends DBContext<Session> {
         try {
             String sql = "select s.id,s.gid,g.gname ,s.timeid, s.date, s.roomid, s.lid, g.courseid from [Session] s\n"
                     + "                    inner join [Group] g on g.id=s.gid and s.lid=?\n"
-                    + "                    where date>=? and date<=?\n"
-                    + "                    order by s.date";
+                    + "                    where date>=? and date<=?\n";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lec);
             stm.setDate(2, Date.valueOf(startDate));
@@ -45,7 +44,6 @@ public class SessionDBContext extends DBContext<Session> {
                 s.setDate(rs.getDate("s.date"));
                 s.setRoom(rs.getString("s.roomid"));
                 s.setLid(rs.getInt("s.lid"));
-                s.setStatus(rs.getBoolean("status"));
                 sessions.add(s);
             }
         } catch (SQLException ex) {

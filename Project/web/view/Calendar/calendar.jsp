@@ -24,8 +24,6 @@
                     <option> FU-HL</option>
                 </select>  </div>
             <div style="text-align: center;">Lecture: <input type="text" name="lecture" value="sonnt">                
-       
-
         <form action="calendar" method="POST" id="schedule_form">
             <table border="1" id="schedule_table" >
                 <tr>
@@ -36,7 +34,7 @@
                             <c:forEach items="${requestScope.weeks}" var="w">
                                 <option  value="${requestScope.weeks.indexOf(w)}"
                                          <c:forEach var="i" begin="0" end="6">
-                                             <c:if test="${requestScope.date eq w.startDate.plusDays(i)}">
+                                             <c:if test="${requestScope.date eq w.startDate.plusDays(i-1)}">
                                                  selected = "selected";
                                              </c:if>
                                          </c:forEach> >
@@ -65,8 +63,8 @@
                         <c:forEach var="i" begin="0" end="6">
                             <td>
                                 <c:forEach items="${requestScope.sessions}" var="s" >
-                                    <c:if test="${s.getTimeid() eq sl.getId() and requestScope.week.getStartDate().plusDays(i) eq s.getDate().toLocalDate()}">
-                                        ${s.getId()}
+                                    <c:if test="${s.timeid eq sl.id and requestScope.week.startDate.plusDays(i-1) eq s.date.toLocalDate()}">
+                                        ${s.getGroup().getGname()} 
                                     </c:if>
                                 </c:forEach> 
                             </td>

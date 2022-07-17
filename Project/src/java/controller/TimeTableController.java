@@ -89,7 +89,6 @@ public class TimeTableController extends HttpServlet {
         SessionDBContext sDBC = new SessionDBContext();
         int lectureId = 5;
         ArrayList<Session> sessions= sDBC.getFromToDate(lectureId, currentWeek.getStartDate(), currentWeek.getEndDate());
-
         request.setAttribute("week", currentWeek);
         request.setAttribute("slot", slot.list());
         request.setAttribute("date", currentDate);
@@ -103,13 +102,13 @@ public class TimeTableController extends HttpServlet {
             throws ServletException, IOException {
         ArrayList<Week> weeks = getWeeksOfYear();
         int index = Integer.parseInt(request.getParameter("week_index"));
+        SlotTime slot= new SlotTime(); 
         Week w = weeks.get(index);
         LocalDate currentDate = w.getStartDate();
         Week currentWeek = getWeekByDate(weeks, currentDate);
-        SessionDBContext sDB= new SessionDBContext();
-        SlotTime slot= new SlotTime(); 
-        int lec = 5;
-        ArrayList<Session> sessions = sDB.getFromToDate(lec, currentWeek.getStartDate(), currentWeek.getEndDate());
+        SessionDBContext sDBC = new SessionDBContext();
+        int lectureId = 5;
+        ArrayList<Session> sessions= sDBC.getFromToDate(lectureId, currentWeek.getStartDate(), currentWeek.getEndDate());
         request.setAttribute("sessions", sessions);
         request.setAttribute("slot", slot.list());
         request.setAttribute("week", currentWeek);
